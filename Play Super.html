@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Super: Interactive Strategy Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-item.active {
+            border-bottom-color: #2563eb;
+            color: #1e3a8a;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+        .card.open .card-content {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="min-h-screen">
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <h1 class="text-2xl font-bold text-slate-900">Play Super: Product Strategy</h1>
+                    <nav class="mt-4 sm:mt-0 flex flex-wrap justify-center space-x-4 md:space-x-6">
+                        <a href="#overview" class="nav-item active font-medium text-slate-600 hover:text-blue-600 pb-1">Overview</a>
+                        <a href="#roadmap" class="nav-item font-medium text-slate-600 hover:text-blue-600 pb-1">12-Month Roadmap</a>
+                        <a href="#crisis" class="nav-item font-medium text-slate-600 hover:text-blue-600 pb-1">Crisis Response</a>
+                        <a href="#feature" class="nav-item font-medium text-slate-600 hover:text-blue-600 pb-1">Feature Deep Dive</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+            <section id="overview" class="section active animate-fade-in">
+                <div class="text-center bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Strategic Vision & Execution Plan</h2>
+                    <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">This interactive deck outlines the strategic product roadmap for Play Super over the next 12 months. It details key priorities for scaling, a response plan for a critical marketplace crisis, and a lean execution plan for a new feature. Explore each section to understand our approach to driving growth, retention, and revenue.</p>
+                </div>
+                <div class="mt-8 grid md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-semibold text-blue-700">3 Key Priorities</h3>
+                        <p class="mt-2 text-slate-500">Focused initiatives to scale the platform and enhance value for all stakeholders.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-semibold text-blue-700">Data-Driven Diagnosis</h3>
+                        <p class="mt-2 text-slate-500">A structured approach to identifying root causes and formulating effective solutions.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-semibold text-blue-700">Lean Execution</h3>
+                        <p class="mt-2 text-slate-500">A 2-sprint plan to rapidly ship high-impact feature and validate hypotheses.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap" class="section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Part 1: 12-Month Strategic Product Roadmap</h2>
+                    <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">Our vision is to scale Play Super by increasing DAUs and improving retention. These three priorities are designed to achieve that goal.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 mb-8">
+                     <h3 class="text-2xl font-semibold text-slate-800 mb-4 text-center">Stakeholder Value Matrix</h3>
+                    <p class="mt-2 text-slate-600 text-center mb-6 max-w-4xl mx-auto">Our strategy must deliver simultaneous value to all three stakeholders (Gamers, Studios, Brands) to ensure ecosystem health and growth.</p>
+                    <div id="value-matrix-container" class="grid md:grid-cols-3 gap-4 text-center"></div>
+                </div>
+
+                <div id="roadmap-container" class="space-y-6"></div>
+            </section>
+
+            <section id="crisis" class="section">
+                 <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Part 2: Rewards Marketplace Crisis Response</h2>
+                    <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">A detailed plan to address a critical 25% drop in redemption rates, reassuring brand partners and studios.</p>
+                </div>
+                <div class="space-y-12">
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4 text-center">The Challenge: Redemption Rate Collapse</h3>
+                        <div class="chart-container">
+                            <canvas id="redemptionChart"></canvas>
+                        </div>
+                         <p class="mt-4 text-slate-600 text-center">A 25% drop over 3 months signals a breakdown in the value exchange, threatening partner ROI and studio retention.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-6 text-center">Structured Diagnosis: Funnel-First, Value-Next</h3>
+                        <div id="diagnosis-container" class="grid md:grid-cols-3 gap-8"></div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-6 text-center">Implementation & Validation Plan</h3>
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div id="implementation-plan"></div>
+                            <div id="validation-framework"></div>
+                        </div>
+                    </div>
+                     
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-slate-800 mb-4 text-center">Long-Term Value Fix: Tiered Coin Economy</h3>
+                        <p class="mt-2 text-slate-600 text-center mb-6 max-w-4xl mx-auto">This model uses user loyalty to unlock better value, addressing the perceived lack of reward value while driving long-term retention for studios.</p>
+                        <div id="tiered-economy-container"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="feature" class="section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Part 3: Execution Simulation - Esports Integration</h2>
+                    <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">A mini-PRD and lean 2-sprint plan for launching a high-impact retention feature.</p>
+                </div>
+                <div id="feature-container" class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-slate-200 space-y-8"></div>
+            </section>
+
+        </main>
+    </div>
+
+<script>
+const appData = {
+    roadmap: [
+        {
+            title: "Priority 1: Personalized Reward Module",
+            problem: "Gamers see irrelevant offers, leading to reduced engagement and low ROI for brands. Our goal is to use data to dynamically match gamers to the most desirable reward inventory.",
+            stakeholders: {
+                "Gamers": "Provide rewards that are relevant for different cohorts of users as per their demographics, preference, and engagement, enhancing their perceived value.",
+                "Studios": "Higher stickiness, engagement, and retention by ensuring the reward loop is valuable and compelling.",
+                "Brands": "Higher returns on spend through better-targeted campaigns, reducing wasted impressions and maximizing conversion."
+            },
+            outcomes: ["CTR on offers", "Redemption conversion rate", "Retention rate on game", "ROI on brand campaigns"],
+            risks: {
+                "Risk": "High analysis paralysis or poor data quality leading to irrelevant rewards, creating a worse experience than the status quo.",
+                "Mitigation": "Kickoff by simple A/B test focused on a single segmentation variable (e.g., genre preference); actively gather user feedback and iterate rapidly."
+            }
+        },
+        {
+            title: "Priority 2: Fraud Prevention and Abuse",
+            problem: "Users hunt for vouchers and hoard them, which leads to an unfair ecosystem for both players and partner brands and skews usage metrics.",
+             stakeholders: {
+                "Gamers": "Trust on the platform and a sense of security within the app, knowing the ecosystem is fair for all participants.",
+                "Studios": "Prevent reward exploitation and leakage from fake claims and multi-accounting, securing their investment in the rewards economy.",
+                "Brands": "Better ROI on campaigns and genuine customer acquisition by eliminating suspicious traffic."
+            },
+            outcomes: ["Dip in suspicious accounts", "% claim of invalid redemptions", "NPS and feedback from users", "Brand satisfaction and retention"],
+            risks: {
+                "Risk": "Friction in journeys of genuine users (e.g., complex KYC required) and potential for false positives blocking legitimate behavior.",
+                "Mitigation": "Make silent backend changes first (multi-accounting checks, IP location analysis). Use human review for multiple claims and clearly communicate changes to legitimate users."
+            }
+        },
+        {
+            title: "Priority 3: Retention Features (Add-on Service)",
+            problem: "Studios need engaging loops (Streaks, Spin the Wheel) but want to save on development effort. Gamers desire more interactive and fun challenges to keep them playing.",
+             stakeholders: {
+                "Gamers": "Interactive gamification layers (Spin a wheel, Streaks) that excite users and give them an element of surprise, boosting daily engagement.",
+                "Studios": "Save on development effort by integrating pre-built gamified mechanics that are proven to boost retention and session length.",
+                "Brands": "More opportunities to increase awareness and conversion via these features (e.g., sponsoring the daily spin prize pool)."
+            },
+            outcomes: ["Increase in day-on-day retention", "Increase in redemption of offers and impressions for brands", "Positive reviews and feedback from users"],
+            risks: {
+                "Risk": "Studios might already have these features. High technical effort for SDK integration. Might alter product positioning.",
+                "Mitigation": "These features will be optional add-ons. Kickoff with one high-demand feature (e.g., Streaks) to check response and provide comprehensive design and integration support."
+            }
+        }
+    ],
+    stakeholderMatrix: {
+        title: "Value Proposition Across Stakeholders",
+        description: "Our strategy must deliver simultaneous value to all three stakeholders to ensure ecosystem health and growth.",
+        rows: [
+            { stakeholder: "Gamers", value: "Relevant Rewards, Security, Competition" },
+            { stakeholder: "Studios", value: "Retention, Engagement, Reduced Fraud" },
+            { stakeholder: "Brands", value: "Targeted Audience, High ROI, Trust" }
+        ]
+    },
+    crisis: {
+        diagnosis: [
+            { 
+                title: "UX/Flow Friction (Detailed Funnel Analysis)", 
+                goal: "Determine the precise stage of the redemption flow where users abandon the process. We need to look beyond the final click.",
+                action: "Execute a granular 5-step funnel analysis (View Marketplace > Select Reward > Check Price > Initiate Redemption > Finalize Partner Link).",
+                insight: "High drop-off between 'Select Reward' and 'Check Price' indicates Coin Price Shock (users view the price and feel it's too high). High drop-off between 'Initiate Redemption' and 'Finalize Partner Link' points directly to technical integration failure or severe partner website friction (e.g., forced sign-up, slow load times, broken coupon codes)."
+            },
+            { 
+                title: "Pricing & Coin Economy Health",
+                goal: "Verify if the coin's utility or earning difficulty has shifted, making rewards feel unattainable.",
+                action: "Calculate Coin Velocity (average time/effort required to earn the top 5 redeemed rewards). Compare Q-on-Q coin-to-reward ratios and run competitive parity checks against three key gaming loyalty programs.",
+                insight: "A slow Coin Velocity suggests users are giving up before reaching the redemption threshold, leading to frustration. If competitor rewards offer 2x the value per hour of gameplay, our perceived value is collapsing."
+            },
+            {
+                title: "Inventory & User Desirability",
+                goal: "Test the core hypothesis: Are the rewards still desirable and relevant to our evolving high-LTV gamer demographic?",
+                action: "Conduct deep-dive interviews with 15 users who have not redeemed in the last 60 days. Simultaneously, perform a content audit to identify rewards that have generated zero redemptions in 90 days, flagging them for retirement.",
+                insight: "Qualitative data will uncover emotional drivers (e.g., 'The prizes feel cheap' or 'I already own those games'). The quantitative audit ensures we remove dead stock that clutters the interface and lowers perceived quality."
+            }
+        ],
+        implementation: {
+            immediate: {
+                title: "Immediate Fixes (0-4 Weeks)",
+                items: [
+                    "Resolve Critical UX Bugs: Fix broken links or confusing steps identified in the Funnel Analysis.",
+                    "Visibility Boost: Run an in-game 'Flash Sale' on a popular reward to test price sensitivity and drive immediate action.",
+                    "Optimize Communication: A/B test a simpler, more prominent CTA on the studio's main page driving users to rewards."
+                ]
+            },
+            longTerm: {
+                 title: "Long-Term Changes (3-6 Months)",
+                items: [
+                    "Tiered Coin Economy: Loyalty tiers (Silver, Gold, Platinum) based on D90 retention to provide increasing coin-to-reward value and exclusive reward access.",
+                    "Flexible Redemption: Introduce a 'Pay with Coins + Cash' option for high-value items to lower the barrier to entry and increase conversion.",
+                    "Evergreen Inventory System: Implement a perpetual process to introduce new rewards monthly and retire the lowest-performing five, keeping the catalog fresh."
+                ]
+            }
+        },
+        tieredEconomy: {
+            tiers: [
+                { name: "Silver Tier", retention: "D30", bonus: "5% Value Bonus", access: "Standard Rewards" },
+                { name: "Gold Tier", retention: "D60", bonus: "10% Value Bonus", access: "Exclusive Partner Drops" },
+                { name: "Platinum Tier", retention: "D90+", bonus: "15% Value Bonus & Priority", access: "Luxury Rewards & Beta Access" }
+            ]
+        },
+        validation: {
+            title: "Validation Framework: A/B Test",
+            hypothesis: "Introducing a 'Quick Redeem' section with low-cost rewards will increase the overall 3-month redemption rate by 15% and positively impact D30 retention among new users.",
+            design: {
+                "Control (A)": "Current rewards marketplace.",
+                "Variant (B)": "Marketplace featuring a prominent 'Quick Redeem' carousel with rewards costing <25% of the average top reward cost."
+            },
+            metrics: [ "Primary: 3-Month Redemption Rate (overall frequency)", "Secondary (Studio): D30 Retention for the exposed cohort", "Secondary (Partner): Partner Conversion Rate (our click-through to partner's final purchase)"]
+        }
+    },
+    feature: {
+        title: "Esports Integration (Competitive Leaderboard MVP)",
+        goal: "Increase retention and dramatically boost the utility and perceived value of the in-game coin economy by introducing competitive spending sinks that monetize competitive desire.",
+        metrics: [
+            { stakeholder: "Gamers (Retention)", metric: "Retention Uplift: Achieve a minimum of +7% D30 retention for tournament participants vs. non-participants." },
+            { stakeholder: "Coin Economy (Utility)", metric: "Coin-to-Tournament Utility Ratio: 15% of all platform coin spend to be captured by tournament entry fees within the first 6 weeks of launch." },
+            { stakeholder: "Brands (Monetization)", metric: "Brand Click-Through Rate (CTR): 4.5% CTR on sponsored tournament banners placed in high-visibility slots." }
+        ],
+        userStories: [
+            { stakeholder: "Competitive Gamers", story: "As a competitive gamer, I want to use my earned coins as a tournament entry fee to gain entry into exclusive, high-stakes contests where I can compete for a large, tangible prize and earn platform-wide social recognition (e.g., a Leaderboard badge)." },
+            { stakeholder: "Brand Sponsors", story: "As a brand sponsor (e.g., a peripheral company), I want to offer my latest product as a tournament prize so that I can directly target and acquire high-LTV, high-engagement gamers who value performance." },
+            { stakeholder: "Game Studio Managers", story: "As a game studio manager, I want a simple, no-code dashboard to configure and manage daily and weekly tournaments based on my existing game metrics (e.g.high score) so that I can boost engagement without requiring changes to my core game's code or balance." }
+        ],
+        tradeOffs: [
+            { type: "Speed (MVP) vs. Scale (Complexity)", decision: "Prioritize Speed by launching a simple Daily High-Score Leaderboard MVP. We explicitly trade off the complexity of real-time automated match-making and bracket systems for rapid validation of core competitive desire." },
+            { type: "Monetization vs. Retention", decision: "Focus on Retention and Coin Utility by making the MVP entry fee Coins-Only." }
+        ],
+        sprints: [
+            { title: "Sprint 1: Core Systems and Admin Setup (2 Weeks)", tasks: ["Finalize Admin Dashboard UI for configuring event parameters (Leaderboard name, description, required coin entry fee, prize pool, number of winners).", "Implement Data Ingestion API endpoint specifically for real-time submission and validation of high scores, including anti-cheat checks.", "Setup Coin store and Debit Logic (securely hold entry fee until tournament/leaderboard conclusion).", "Define and assign A/B Test Cohorts (50% control, 50% variant access) and monitoring dashboards." ] },
+            { title: "Sprint 2: Gamer MVP UI and Payout Automation (2 Weeks)", tasks: ["Develop Gamers UI (a new 'Tournaments' tab with buy-in and leaderboard views).", "Integrate the secure Buy-In Flow connecting the coin wallet and tournament entry.", "Build Automated Payout Logic (a scheduled job to calculate rank and distribute prize pool to winners' coin wallets).", "Launch A/B Test and begin monitoring primary/secondary success metrics in real-time." ] }
+        ]
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.section');
+
+    function showSection(hash) {
+        sections.forEach(section => {
+            if ('#' + section.id === hash) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+        navItems.forEach(item => {
+            if (item.getAttribute('href') === hash) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const hash = this.getAttribute('href');
+            history.pushState(null, null, hash);
+            showSection(hash);
+        });
+    });
+
+    window.addEventListener('popstate', () => {
+        showSection(window.location.hash || '#overview');
+    });
+    
+    showSection(window.location.hash || '#overview');
+    
+    populateRoadmap();
+    populateStakeholderValueMatrix();
+    populateCrisisResponse();
+    populateTieredCoinEconomy();
+    populateFeatureDeepDive();
+    createRedemptionChart();
+});
+
+function createCard(item, index) {
+    const card = document.createElement('div');
+    card.className = 'card bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden';
+    let stakeholderHTML = '';
+    for (const [key, value] of Object.entries(item.stakeholders)) {
+        stakeholderHTML += `<li class="flex items-start"><span class="font-semibold text-slate-700 w-20 flex-shrink-0">${key}:</span><span class="text-slate-600">${value}</span></li>`;
+    }
+    
+    card.innerHTML = `
+        <div class="p-6 cursor-pointer flex justify-between items-center" onclick="toggleCard(this)">
+            <h3 class="text-xl font-semibold text-slate-800">${item.title}</h3>
+            <span class="transform transition-transform text-blue-600 text-2xl font-light">+</span>
+        </div>
+        <div class="card-content">
+            <div class="px-6 pb-6 border-t border-slate-200 pt-4">
+                <p class="mb-4 text-slate-600">${item.problem}</p>
+                <div class="mb-4">
+                    <h4 class="font-semibold text-slate-700 mb-2">Problem Solved For:</h4>
+                    <ul class="space-y-2 list-disc list-inside text-sm">${stakeholderHTML}</ul>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-2">Measurable Outcomes</h4>
+                        <ul class="space-y-1 list-disc list-inside text-sm text-slate-600">${item.outcomes.map(o => `<li>${o}</li>`).join('')}</ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-2">Risks & Mitigation</h4>
+                        <p class="text-sm text-slate-600 mb-1"><span class="font-medium text-slate-700">Risk:</span> ${item.risks.Risk}</p>
+                        <p class="text-sm text-slate-600"><span class="font-medium text-slate-700">Mitigation:</span> ${item.risks.Mitigation}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+function toggleCard(header) {
+    const card = header.closest('.card');
+    card.classList.toggle('open');
+    const icon = header.querySelector('span');
+    icon.textContent = card.classList.contains('open') ? '−' : '+';
+    icon.classList.toggle('rotate-90');
+}
+
+function populateRoadmap() {
+    const container = document.getElementById('roadmap-container');
+    appData.roadmap.forEach((item, index) => {
+        container.appendChild(createCard(item, index));
+    });
+}
+
+function populateStakeholderValueMatrix() {
+    const container = document.getElementById('value-matrix-container');
+    appData.stakeholderMatrix.rows.forEach(row => {
+        const div = document.createElement('div');
+        div.className = "bg-blue-50 p-4 rounded-lg border border-blue-200 shadow-inner";
+        div.innerHTML = `
+            <h4 class="font-bold text-lg text-blue-800 mb-2">${row.stakeholder}</h4>
+            <p class="text-sm text-slate-600">${row.value}</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function createRedemptionChart() {
+    const ctx = document.getElementById('redemptionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Previous Quarter', 'Current Quarter'],
+            datasets: [{
+                label: 'Redemption Rate',
+                data: [100, 75],
+                backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(239, 68, 68, 0.7)'],
+                borderColor: ['rgba(59, 130, 246, 1)', 'rgba(239, 68, 68, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Quarterly Redemption Rate Drop (25%)', font: { size: 16 } },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            if (context.dataIndex === 1) return `Current: 75% of Base Rate`;
+                            return `Base Rate: 100%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 110,
+                    ticks: { callback: value => value + '%' }
+                }
+            }
+        }
+    });
+}
+
+function populateCrisisResponse() {
+    const diagnosisContainer = document.getElementById('diagnosis-container');
+    appData.crisis.diagnosis.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "bg-slate-50 p-4 rounded-lg border";
+        div.innerHTML = `
+            <h4 class="font-semibold text-lg text-blue-800 mb-2">${item.title}</h4>
+            <p class="text-sm text-slate-600 mb-2"><span class="font-medium text-slate-700">Goal:</span> ${item.goal}</p>
+            <p class="text-sm text-slate-600 mb-2"><span class="font-medium text-slate-700">Action:</span> ${item.action}</p>
+            <p class="text-sm text-slate-600 bg-blue-100 p-2 rounded"><span class="font-medium text-slate-700">Insight:</span> ${item.insight}</p>
+        `;
+        diagnosisContainer.appendChild(div);
+    });
+
+    const implementationPlan = document.getElementById('implementation-plan');
+    const { immediate, longTerm } = appData.crisis.implementation;
+    implementationPlan.innerHTML = `
+        <h4 class="text-xl font-semibold text-slate-800 mb-4">Implementation Plan</h4>
+        <div class="space-y-4">
+            <div>
+                <h5 class="font-semibold text-slate-700">${immediate.title}</h5>
+                <ul class="mt-2 space-y-1 list-disc list-inside text-slate-600 text-sm">${immediate.items.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+             <div>
+                <h5 class="font-semibold text-slate-700">${longTerm.title}</h5>
+                <ul class="mt-2 space-y-1 list-disc list-inside text-slate-600 text-sm">${longTerm.items.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+        </div>
+    `;
+
+    const validationFramework = document.getElementById('validation-framework');
+    const { title, hypothesis, design, metrics } = appData.crisis.validation;
+    validationFramework.innerHTML = `
+        <h4 class="text-xl font-semibold text-slate-800 mb-4">${title}</h4>
+        <div class="space-y-4">
+            <div>
+                <h5 class="font-semibold text-slate-700">Hypothesis</h5>
+                <p class="mt-1 text-slate-600 text-sm">${hypothesis}</p>
+            </div>
+            <div>
+                <h5 class="font-semibold text-slate-700">Experiment Design</h5>
+                <p class="mt-1 text-slate-600 text-sm"><span class="font-medium">Control (A):</span> ${design["Control (A)"]}</p>
+                <p class="mt-1 text-slate-600 text-sm"><span class="font-medium">Variant (B):</span> ${design["Variant (B)"]}</p>
+            </div>
+             <div>
+                <h5 class="font-semibold text-slate-700">Key Success Metrics</h5>
+                 <ul class="mt-2 space-y-1 list-disc list-inside text-slate-600 text-sm">${metrics.map(m => `<li>${m}</li>`).join('')}</ul>
+            </div>
+        </div>
+    `;
+}
+
+function populateTieredCoinEconomy() {
+    const container = document.getElementById('tiered-economy-container');
+    const tiers = appData.crisis.tieredEconomy.tiers;
+
+    const html = tiers.map((tier, index) => {
+        const arrow = index < tiers.length - 1 ? `<div class="md:w-full w-2/3 h-0 border-t-4 border-blue-400 border-dashed transform rotate-90 md:rotate-0 my-4 md:my-0"></div><div class="text-blue-500 text-4xl -mt-5 md:-mt-0 md:-ml-3 rotate-90 md:rotate-0">→</div>` : '';
+        
+        return `
+            <div class="flex flex-col items-center justify-center w-full">
+                <div class="bg-blue-600 text-white p-3 rounded-full text-center font-bold mb-3 w-12 h-12 flex items-center justify-center shadow-lg">${index + 1}</div>
+                <div class="bg-white p-5 rounded-lg shadow-xl border border-blue-300 w-full max-w-xs transform hover:scale-[1.02] transition-transform">
+                    <h4 class="text-xl font-bold text-blue-900 mb-2">${tier.name}</h4>
+                    <p class="text-sm text-slate-700"><span class="font-semibold">Retention Requirement:</span> D${tier.retention} Active</p>
+                    <p class="text-sm text-slate-700"><span class="font-semibold">Value Boost:</span> ${tier.bonus}</p>
+                    <p class="text-sm text-slate-700"><span class="font-semibold">Access:</span> ${tier.access}</p>
+                </div>
+            </div>
+            ${arrow}
+        `;
+    }).join('');
+
+    container.className = 'flex flex-col md:flex-row justify-center items-center';
+    container.innerHTML = html;
+}
+
+function populateFeatureDeepDive() {
+    const container = document.getElementById('feature-container');
+    const feature = appData.feature;
+
+    container.innerHTML = `
+        <div>
+            <h3 class="text-2xl font-semibold text-slate-800">${feature.title}</h3>
+            <p class="mt-2 text-slate-600">${feature.goal}</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-6 pt-6 border-t">
+            ${feature.metrics.map(m => `
+                <div class="bg-slate-50 p-4 rounded-lg border">
+                    <h4 class="font-semibold text-blue-800">${m.stakeholder}</h4>
+                    <p class="mt-1 text-slate-600 text-sm">${m.metric}</p>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="pt-6 border-t">
+            <h4 class="text-xl font-semibold text-slate-800 mb-4">User Stories</h4>
+            <div class="space-y-4">
+                ${feature.userStories.map(us => `
+                    <div class="bg-slate-50 p-4 rounded-lg border">
+                         <p class="text-slate-600"><span class="font-semibold text-slate-700">${us.stakeholder}:</span> "${us.story}"</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="pt-6 border-t">
+             <h4 class="text-xl font-semibold text-slate-800 mb-4">Key Trade-Offs</h4>
+            <div class="space-y-4">
+                 ${feature.tradeOffs.map(t => `
+                    <div class="p-4 rounded-lg border">
+                        <h5 class="font-semibold text-slate-700">${t.type}</h5>
+                        <p class="mt-1 text-slate-600 text-sm">${t.decision}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="pt-6 border-t">
+             <h4 class="text-xl font-semibold text-slate-800 mb-4">Lean 2-Sprint Execution Plan</h4>
+            <div class="grid md:grid-cols-2 gap-6">
+                 ${feature.sprints.map(s => `
+                    <div class="bg-slate-50 p-4 rounded-lg border">
+                        <h5 class="font-semibold text-slate-700">${s.title}</h5>
+                        <ul class="mt-2 space-y-1 list-disc list-inside text-slate-600 text-sm">${s.tasks.map(t => `<li>${t}</li>`).join('')}</ul>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
